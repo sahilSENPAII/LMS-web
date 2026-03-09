@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Nexus LMS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+<!-- NAVBAR -->
+
+<header class="bg-white shadow-sm">
+<div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+
+<h1 class="text-xl font-semibold text-gray-800">
+Nexus LMS
+</h1>
+
+<nav class="space-x-6 text-gray-600 text-sm">
+<a href="#" class="hover:text-black">Explore</a>
+<a href="#" class="hover:text-black">Courses</a>
+<a href="#" class="hover:text-black">About</a>
+</nav>
+
+</div>
+</header>
+
+<!-- LOGIN CARD -->
+
+<div class="flex items-center justify-center mt-20">
+
+<div class="bg-white p-8 w-[400px] rounded-lg shadow-md">
+
+<h2 class="text-2xl font-semibold text-gray-800 mb-6">
+Welcome Back
+</h2>
+
+<!-- EMAIL -->
+
+<div class="mb-4">
+<label class="block text-sm text-gray-600 mb-1">Email</label>
+<input
+id="email"
+type="email"
+class="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+placeholder="you@example.com"
+/>
+</div>
+
+<!-- PASSWORD -->
+
+<div class="mb-6">
+<label class="block text-sm text-gray-600 mb-1">Password</label>
+<input
+id="password"
+type="password"
+class="w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+placeholder="Enter password"
+/>
+</div>
+
+<!-- BUTTONS -->
+
+<div class="space-y-3">
+
+<button
+onclick="login()"
+class="w-full bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700"
+>
+Sign In
+</button>
+
+<button
+onclick="signup()"
+class="w-full border border-gray-300 py-3 rounded-md hover:bg-gray-50"
+>
+Create Account
+</button>
+
+</div>
+
+<p id="status" class="text-sm text-gray-600 text-center mt-4"></p>
+
+</div>
+
+</div>
+
+<script>
+
+const API_URL = "http://localhost:5001/api/auth"
+
+async function signup(){
+
+const email = document.getElementById("email").value
+const password = document.getElementById("password").value
+const status = document.getElementById("status")
+
+if(!email || !password){
+alert("Please fill both fields")
+return
+}
+
+try{
+
+const response = await fetch(`${API_URL}/signup`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+email,
+password
+})
+
+})
+
+const data = await response.json()
+
+status.innerText = data.message
+
+}catch(err){
+
+status.innerText = "Server error"
+
+}
+
+}
+
+async function login(){
+
+const email = document.getElementById("email").value
+const password = document.getElementById("password").value
+const status = document.getElementById("status")
+
+if(!email || !password){
+alert("Please fill both fields")
+return
+}
+
+try{
+
+const response = await fetch(`${API_URL}/login`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+email,
+password
+})
+
+})
+
+const data = await response.json()
+
+if(data.token){
+
+localStorage.setItem("token",data.token)
+
+status.innerText="Login successful"
+
+}else{
+
+status.innerText=data.message
+
+}
+
+}catch(err){
+
+status.innerText="Server error"
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
