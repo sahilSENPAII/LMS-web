@@ -1,4 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// LAYOUT
+import Layout from "./components/Layout";
 
 // ADMIN PAGES
 import Users from "./pages/admin/Users";
@@ -17,27 +20,14 @@ import PaypalPayment from "./pages/student/PaypalPayment";
 function App() {
   return (
     <Router>
-      <div style={{ fontFamily: "Arial", padding: "20px" }}>
-        <h1>LMS Platform</h1>
-
-        {/* STUDENT NAVBAR */}
-        <nav style={{ marginBottom: "20px" }}>
-          <Link to="/" style={{ marginRight: "15px" }}>Home</Link>
-          <Link to="/courses" style={{ marginRight: "15px" }}>Courses</Link>
-          <Link to="/my-courses" style={{ marginRight: "15px" }}>My Courses</Link>
-          <Link to="/admin/users">Admin</Link>
-        </nav>
-
+      <Layout>
         <Routes>
-
           {/* STUDENT ROUTES */}
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/course/:id" element={<CourseDetails />} />
           <Route path="/my-courses" element={<MyCourses />} />
           <Route path="/checkout/:courseId" element={<Checkout />} />
-
-          {/* PAYPAL PAYMENT PAGE */}
           <Route path="/paypal/:courseId" element={<PaypalPayment />} />
 
           {/* ADMIN ROUTES */}
@@ -45,9 +35,8 @@ function App() {
           <Route path="/admin/courses" element={<AdminCourses />} />
           <Route path="/admin/enrollments" element={<Enrollments />} />
           <Route path="/admin/payments" element={<Payments />} />
-
         </Routes>
-      </div>
+      </Layout>
     </Router>
   );
 }
